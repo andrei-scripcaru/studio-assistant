@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 
+import type { User } from '../types/user'
+
 declare global {
   interface Window {
-    __user?: JSON | null
+    __user?: User | null
   }
 }
 

@@ -1,11 +1,9 @@
-import type { NextPage } from 'next'
-
 import { withApollo } from '../lib/apollo'
 
 import Todos from '../components/Todos'
 
-const Home: NextPage = () => {
+const Home = (): JSX.Element => {
   return <Todos />
 }
 
-export default withApollo({ ssr: true })(Home)
+export default withApollo()(Home)

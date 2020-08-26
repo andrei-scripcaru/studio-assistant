@@ -1,13 +1,13 @@
 import Head from 'next/head'
 
-import { Box, Grid } from '@chakra-ui/core'
+import { Grid, Box } from '@chakra-ui/core'
 
 import Header from './Header'
 import Navigation from './Navigation'
 
 const Layout: React.FC = ({ children }) => {
   return (
-    <div>
+    <>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -26,6 +26,7 @@ const Layout: React.FC = ({ children }) => {
         <Box
           as="main"
           gridArea="main"
+          overflow="hidden"
           marginTop={4}
           marginLeft="-1px"
           borderLeft="1px solid"
@@ -34,7 +35,7 @@ const Layout: React.FC = ({ children }) => {
           {children}
         </Box>
       </Grid>
-    </div>
+    </>
   )
 }
 

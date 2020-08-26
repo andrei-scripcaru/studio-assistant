@@ -1,4 +1,6 @@
 import {
+  Box,
+  Flex,
   Tabs,
   TabList,
   Tab,
@@ -7,7 +9,6 @@ import {
   Icon,
   Heading,
   HStack,
-  Box,
 } from '@chakra-ui/core'
 
 import { HiOutlineViewGrid, HiOutlineUserGroup } from 'react-icons/hi'
@@ -21,13 +22,22 @@ const Cabinet = (): JSX.Element => {
   }
 
   const boxProps = {
+    overflow: 'auto',
     width: '50%',
+    height: 'full',
+    padding: 4,
     border: '1px solid',
     borderColor: 'gray.200',
   }
 
   return (
-    <Tabs variant="enclosed-colored" marginLeft="-1px">
+    <Tabs
+      as={Flex}
+      flexDirection="column"
+      height="full"
+      marginLeft="-1px"
+      variant="enclosed-colored"
+    >
       <TabList>
         <Tab {...tabProps}>
           <Icon as={HiOutlineViewGrid} boxSize={8} />
@@ -38,13 +48,15 @@ const Cabinet = (): JSX.Element => {
         </Tab>
       </TabList>
 
-      <TabPanels>
-        <TabPanel>
-          <HStack spacing={8}>
-            <Box {...boxProps}>Author</Box>
+      <TabPanels overflow="hidden" height="full">
+        <TabPanel as={HStack} height="full" spacing={4}>
+          <Box {...boxProps}>
+            <Heading textAlign="center">Author</Heading>
+          </Box>
 
-            <Box {...boxProps}>Participant</Box>
-          </HStack>
+          <Box {...boxProps}>
+            <Heading textAlign="center">Participant</Heading>
+          </Box>
         </TabPanel>
 
         <TabPanel>

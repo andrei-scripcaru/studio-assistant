@@ -216,6 +216,7 @@ export const withApollo = ({ ssr = true } = {}) => (
 
       return {
         ...pageProps,
+
         apolloState,
       }
     }

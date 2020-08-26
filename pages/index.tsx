@@ -1,9 +1,5 @@
-import { withApollo } from '../lib/apollo'
-
-import Todos from '../components/Todos'
-
 const Home = (): JSX.Element => {
-  return <Todos />
+  return null
 }
 
-export default withApollo()(Home)
+export default Home

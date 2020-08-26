@@ -64,6 +64,7 @@ const Navigation: React.FC = () => {
               router.pathname === link.href ? 'gray.200' : 'transparent'
             }
             color={router.pathname === link.href ? 'blue.600' : 'currentColor'}
+            pointerEvents={router.pathname === link.href ? 'none' : 'auto'}
           />
         </NextLink>
       ))}

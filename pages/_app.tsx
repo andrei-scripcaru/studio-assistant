@@ -1,20 +1,22 @@
 import type { AppProps } from 'next/app'
 
-import { ThemeProvider, CSSReset, ColorModeProvider } from '@chakra-ui/core'
+import { ChakraProvider, CSSReset } from '@chakra-ui/core'
+
+import theme from '@chakra-ui/theme'
+
+import 'focus-visible'
 
 import Layout from '../components/Layout'
 
 const App = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
-    <ThemeProvider>
-      <ColorModeProvider>
-        <CSSReset />
+    <ChakraProvider theme={theme}>
+      <CSSReset />
 
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ColorModeProvider>
-    </ThemeProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </ChakraProvider>
   )
 }
 

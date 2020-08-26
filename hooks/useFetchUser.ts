@@ -41,7 +41,7 @@ export const fetchUser = async (
   return json
 }
 
-export default ({ required = true } = {}): {
+const useFetchUser = ({ required = true } = {}): {
   user: Window['__user']
   loading: boolean
 } => {
@@ -88,3 +88,5 @@ export default ({ required = true } = {}): {
 
   return { user, loading }
 }
+
+export default useFetchUser

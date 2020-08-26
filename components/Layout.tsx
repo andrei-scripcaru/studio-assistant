@@ -17,13 +17,20 @@ const Layout: React.FC = ({ children }) => {
         templateAreas="'header header' 'navigation main'"
         templateRows="auto 1fr"
         templateColumns="auto 1fr"
-        w="100vw"
-        h="100vh"
+        width="100vw"
+        height="100vh"
       >
         <Header />
         <Navigation />
 
-        <Box as="main" gridArea="main">
+        <Box
+          as="main"
+          gridArea="main"
+          marginTop={4}
+          marginLeft="-1px"
+          borderLeft="1px solid"
+          borderLeftColor="gray.200"
+        >
           {children}
         </Box>
       </Grid>

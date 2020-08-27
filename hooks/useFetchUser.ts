@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import type { User } from '../types/user'
+import type { User } from '../types/User'
 
 declare global {
   interface Window {

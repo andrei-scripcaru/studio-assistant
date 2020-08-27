@@ -15,6 +15,9 @@ import { HiOutlineViewGrid, HiOutlineUserGroup } from 'react-icons/hi'
 
 import { withApollo } from '../lib/apollo'
 
+import ProjectList from '../components/Project/ProjectList'
+import ProjectModal from '../components/Project/ProjectModal'
+
 const Cabinet = (): JSX.Element => {
   const tabProps = {
     width: 64,
@@ -51,7 +54,10 @@ const Cabinet = (): JSX.Element => {
       <TabPanels overflow="hidden" height="full">
         <TabPanel as={HStack} height="full" spacing={4}>
           <Box {...boxProps}>
-            <Heading textAlign="center">Author</Heading>
+            <Heading textAlign="center">
+              <ProjectList />
+              <ProjectModal />
+            </Heading>
           </Box>
 
           <Box {...boxProps}>

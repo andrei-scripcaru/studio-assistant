@@ -45,9 +45,10 @@ const createWSLink = (): WebSocketLink => {
     new SubscriptionClient('wss://loving-crappie-74.hasura.app/v1/graphql', {
       lazy: true,
       reconnect: true,
-      connectionParams: async () => {
+
+      async connectionParams() {
         if (!accessToken) {
-          const res = await fetch('http://localhost:3000/api/session')
+          const res = await fetch('/api/session')
 
           if (res.ok) {
             const json = await res.json()

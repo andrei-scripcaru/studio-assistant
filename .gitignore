@@ -37,3 +37,6 @@ yarn-error.log*
 # editor
 .idea
 .history
+
+# hasura
+hasura/config.yaml

@@ -103,6 +103,7 @@
       - permission:
           columns:
           - id
+          - last_seen
           - name
           filter: {}
         role: user

@@ -12,7 +12,7 @@ $$;
 CREATE TABLE public."user" (
     id text NOT NULL,
     name text NOT NULL,
-    last_seen timestamp with time zone,
+    last_seen timestamp with time zone DEFAULT now(),
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now()
 );
@@ -29,10 +29,6 @@ CREATE TABLE public.project (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now()
 );
-CREATE TABLE public.project_user (
-    project_id integer NOT NULL,
-    user_id text NOT NULL
-);
 CREATE SEQUENCE public.project_id_seq
     AS integer
     START WITH 1
@@ -41,6 +37,10 @@ CREATE SEQUENCE public.project_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public.project_id_seq OWNED BY public.project.id;
+CREATE TABLE public.project_user (
+    project_id integer NOT NULL,
+    user_id text NOT NULL
+);
 ALTER TABLE ONLY public.project ALTER COLUMN id SET DEFAULT nextval('public.project_id_seq'::regclass);
 ALTER TABLE ONLY public.project
     ADD CONSTRAINT project_pkey PRIMARY KEY (id);

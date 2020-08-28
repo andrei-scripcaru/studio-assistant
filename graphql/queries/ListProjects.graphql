@@ -1,10 +1,7 @@
 query ListProjects {
-  project {
+  project(order_by: { created_at: desc }) {
     id
     title
     description
-    user {
-      name
-    }
   }
 }

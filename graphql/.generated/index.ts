@@ -415,6 +415,7 @@ export type Timestamptz_Comparison_Exp = {
 export type User = {
   __typename?: 'user';
   id: Scalars['String'];
+  last_seen?: Maybe<Scalars['timestamptz']>;
   name: Scalars['String'];
   /** An array relationship */
   projects: Array<Project>;
@@ -436,6 +437,7 @@ export type User_Bool_Exp = {
   _not?: Maybe<User_Bool_Exp>;
   _or?: Maybe<Array<Maybe<User_Bool_Exp>>>;
   id?: Maybe<String_Comparison_Exp>;
+  last_seen?: Maybe<Timestamptz_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   projects?: Maybe<Project_Bool_Exp>;
 };
@@ -465,6 +467,7 @@ export type User_On_Conflict = {
 /** ordering options when selecting data from "user" */
 export type User_Order_By = {
   id?: Maybe<Order_By>;
+  last_seen?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
 };
 
@@ -477,6 +480,8 @@ export type User_Pk_Columns_Input = {
 export enum User_Select_Column {
   /** column name */
   Id = 'id',
+  /** column name */
+  LastSeen = 'last_seen',
   /** column name */
   Name = 'name'
 }
@@ -492,6 +497,20 @@ export enum User_Update_Column {
   LastSeen = 'last_seen'
 }
 
+export type CreateProjectMutationVariables = Exact<{
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+}>;
+
+
+export type CreateProjectMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_project_one?: Maybe<(
+    { __typename?: 'project' }
+    & Pick<Project, 'id' | 'title' | 'description'>
+  )> }
+);
+
 export type ListProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -500,23 +519,51 @@ export type ListProjectsQuery = (
   & { project: Array<(
     { __typename?: 'project' }
     & Pick<Project, 'id' | 'title' | 'description'>
-    & { user: (
-      { __typename?: 'user' }
-      & Pick<User, 'name'>
-    ) }
   )> }
 );
 
 
-export const ListProjectsDocument = gql`
-    query ListProjects {
-  project {
+export const CreateProjectDocument = gql`
+    mutation CreateProject($title: String, $description: String) {
+  insert_project_one(object: {title: $title, description: $description}) {
     id
     title
     description
-    user {
-      name
-    }
+  }
+}
+    `;
+export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutation, CreateProjectMutationVariables>;
+
+/**
+ * __useCreateProjectMutation__
+ *
+ * To run a mutation, you first call `useCreateProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProjectMutation, { data, loading, error }] = useCreateProjectMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useCreateProjectMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateProjectMutation, CreateProjectMutationVariables>(CreateProjectDocument, baseOptions);
+      }
+export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
+export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
+export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
+export const ListProjectsDocument = gql`
+    query ListProjects {
+  project(order_by: {created_at: desc}) {
+    id
+    title
+    description
   }
 }
     `;

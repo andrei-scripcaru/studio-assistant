@@ -9,7 +9,8 @@ const Layout: React.FC = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>Studio Assistant</title>
+
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

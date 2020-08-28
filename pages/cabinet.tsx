@@ -19,50 +19,62 @@ import ProjectList from '../components/Project/ProjectList'
 import ProjectModal from '../components/Project/ProjectModal'
 
 const Cabinet = (): JSX.Element => {
-  const tabProps = {
-    width: 64,
-    height: 16,
-  }
-
-  const boxProps = {
-    overflow: 'auto',
+  const flexProps = {
+    direction: 'column',
     width: '50%',
     height: 'full',
-    padding: 4,
     border: '1px solid',
     borderColor: 'gray.200',
+  }
+
+  const headingProps = {
+    paddingY: 4,
+    borderBottom: '1px solid',
+    borderBottomColor: 'gray.100',
+    textAlign: 'center',
+    size: 'lg',
+    fontWeight: 'normal',
   }
 
   return (
     <Tabs
       as={Flex}
-      flexDirection="column"
-      height="full"
-      marginLeft="-1px"
-      variant="enclosed-colored"
+      direction={'column'}
+      height={'full'}
+      marginLeft={'-1px'}
+      variant={'enclosed-colored'}
     >
       <TabList>
-        <Tab {...tabProps}>
+        <Tab width={64} height={16}>
           <Icon as={HiOutlineViewGrid} boxSize={8} />
         </Tab>
 
-        <Tab {...tabProps}>
+        <Tab width={64} height={16}>
           <Icon as={HiOutlineUserGroup} boxSize={8} />
         </Tab>
       </TabList>
 
       <TabPanels overflow="hidden" height="full">
         <TabPanel as={HStack} height="full" spacing={4}>
-          <Box {...boxProps}>
-            <Heading textAlign="center">
-              <ProjectList />
-              <ProjectModal />
-            </Heading>
-          </Box>
+          <Flex {...flexProps}>
+            <Heading {...headingProps}>Authoring</Heading>
 
-          <Box {...boxProps}>
-            <Heading textAlign="center">Participant</Heading>
-          </Box>
+            <Box padding={4} overflow={'auto'}>
+              <ProjectList />
+            </Box>
+
+            <Box
+              padding={4}
+              borderTop={'1px solid'}
+              borderTopColor={'gray.100'}
+            >
+              <ProjectModal />
+            </Box>
+          </Flex>
+
+          <Flex {...flexProps}>
+            <Heading {...headingProps}>Participating</Heading>
+          </Flex>
         </TabPanel>
 
         <TabPanel>

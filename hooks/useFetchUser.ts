@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react'
 
-import type { User } from '../types/User'
-
 declare global {
   interface Window {
     __user?: User | null
   }
+}
+
+export interface User {
+  nickname?: string
+  name?: string
+  picture?: string
+  updated_at?: Date
+  sub?: string
 }
 
 export const fetchUser = async (

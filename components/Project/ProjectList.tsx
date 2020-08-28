@@ -1,3 +1,5 @@
+import { SimpleGrid, Box } from '@chakra-ui/core'
+
 import { useListProjectsQuery } from '../../graphql/.generated'
 
 const ProjectList: React.FC = () => {
@@ -7,7 +9,11 @@ const ProjectList: React.FC = () => {
   if (error) return <div>Error! ${error.message}</div>
 
   return (
-    <>{data.project.map((project) => `This is a project: ${project.title}`)}</>
+    <SimpleGrid columns={1} spacing={10}>
+      {data.project.map((project) => (
+        <Box key={project.id}>{project.title}</Box>
+      ))}
+    </SimpleGrid>
   )
 }
 

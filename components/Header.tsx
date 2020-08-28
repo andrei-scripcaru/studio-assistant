@@ -24,7 +24,7 @@ const Header: React.FC = () => {
       alignItems="center"
       gridArea="header"
       borderBottom="1px solid"
-      borderBottomColor="gray.100"
+      borderBottomColor="gray.200"
       height={20}
       paddingX={6}
     >

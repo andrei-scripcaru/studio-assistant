@@ -20,7 +20,6 @@ import ProjectModal from '../components/Project/ProjectModal'
 
 const Cabinet = (): JSX.Element => {
   const flexProps = {
-    direction: 'column',
     width: '50%',
     height: 'full',
     border: '1px solid',
@@ -31,7 +30,6 @@ const Cabinet = (): JSX.Element => {
     paddingY: 4,
     borderBottom: '1px solid',
     borderBottomColor: 'gray.100',
-    textAlign: 'center',
     size: 'lg',
     fontWeight: 'normal',
   }
@@ -56,8 +54,10 @@ const Cabinet = (): JSX.Element => {
 
       <TabPanels overflow="hidden" height="full">
         <TabPanel as={HStack} height="full" spacing={4}>
-          <Flex {...flexProps}>
-            <Heading {...headingProps}>Authoring</Heading>
+          <Flex {...flexProps} direction={'column'}>
+            <Heading {...headingProps} textAlign={'center'}>
+              Authoring
+            </Heading>
 
             <Box padding={4} overflow={'auto'}>
               <ProjectList />
@@ -72,7 +72,7 @@ const Cabinet = (): JSX.Element => {
             </Box>
           </Flex>
 
-          <Flex {...flexProps}>
+          <Flex {...flexProps} direction={'column'}>
             <Heading {...headingProps}>Participating</Heading>
           </Flex>
         </TabPanel>

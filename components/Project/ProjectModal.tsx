@@ -42,7 +42,7 @@ const ProjectModal: React.FC = () => {
 
   const [createProject, { loading }] = useCreateProjectMutation({
     update(cache, { data }) {
-      const existingProjects = cache.readQuery({
+      const { project: existingProjects } = cache.readQuery({
         query: ListProjectsDocument,
       })
 
@@ -50,7 +50,7 @@ const ProjectModal: React.FC = () => {
 
       cache.writeQuery({
         query: ListProjectsDocument,
-        data: { project: [newProject, ...existingProjects.project] },
+        data: { project: [newProject, ...existingProjects] },
       })
     },
 

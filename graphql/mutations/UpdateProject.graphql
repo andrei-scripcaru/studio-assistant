@@ -1,0 +1,10 @@
+mutation UpdateProject($id: Int!, $title: String, $description: String) {
+  update_project_by_pk(
+    pk_columns: { id: $id }
+    _set: { description: $description, title: $title }
+  ) {
+    id
+    title
+    description
+  }
+}

@@ -2,17 +2,27 @@ import { useRecoilState } from 'recoil'
 
 import { projectModalState } from '../lib/recoil'
 
+import { Maybe, Project } from '../graphql/.generated'
+
 const useProjectModal = (): {
-  currentState: { id?: number; isOpen: boolean }
-  onOpen(projectId?: number): void
+  project?: Maybe<
+    { __typename?: 'project' } & Pick<Project, 'id' | 'title' | 'description'>
+  >
+  isOpen: boolean
+  onOpen(
+    project?: Maybe<
+      { __typename?: 'project' } & Pick<Project, 'id' | 'title' | 'description'>
+    >
+  ): void
   onClose(): void
 } => {
   const [currentState, setCurrentState] = useRecoilState(projectModalState)
 
   return {
-    currentState,
-    onOpen: (projectId) => setCurrentState({ id: projectId, isOpen: true }),
-    onClose: () => setCurrentState({ id: null, isOpen: false }),
+    ...currentState,
+
+    onOpen: (project) => setCurrentState({ project, isOpen: true }),
+    onClose: () => setCurrentState({ project: null, isOpen: false }),
   }
 }
 

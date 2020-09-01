@@ -24,20 +24,21 @@ import useProjectModal from '../../hooks/useProjectModal'
 
 import {
   useCreateProjectMutation,
+  useUpdateProjectMutation,
   ListProjectsDocument,
 } from '../../graphql/.generated'
 
 const ProjectModal: React.FC = () => {
-  const {
-    currentState: { id, isOpen },
-    onClose,
-  } = useProjectModal()
+  const { project, isOpen, onClose } = useProjectModal()
 
   const toast = useToast()
 
-  const { handleSubmit, errors, register } = useForm()
+  const { handleSubmit, errors, register, setValue } = useForm()
 
-  const [createProject, { loading }] = useCreateProjectMutation({
+  const [
+    createProject,
+    { loading: createProjectLoading },
+  ] = useCreateProjectMutation({
     update(cache, { data }) {
       const { project: existingProjects } = cache.readQuery({
         query: ListProjectsDocument,
@@ -75,6 +76,39 @@ const ProjectModal: React.FC = () => {
     },
   })
 
+  const [
+    updateProject,
+    { loading: updateProjectLoading },
+  ] = useUpdateProjectMutation({
+    onCompleted({ update_project_by_pk: { title } }) {
+      toast({
+        title: 'Yay!',
+        description: `${title} successfully updated.`,
+        status: 'success',
+        position: 'top',
+        duration: 2500,
+        isClosable: true,
+      })
+
+      onClose()
+    },
+
+    onError(error) {
+      toast({
+        title: 'Whoops!',
+        description: error.message,
+        status: 'error',
+        duration: 2500,
+        isClosable: true,
+      })
+    },
+  })
+
+  if (project) {
+    setValue('title', project.title)
+    setValue('description', project.description)
+  }
+
   return (
     <Fade timeout={300} in={isOpen}>
       {(styles) => (
@@ -83,17 +117,23 @@ const ProjectModal: React.FC = () => {
             <SlideFade timeout={150} in={isOpen} unmountOnExit={false}>
               {(styles) => (
                 <ModalContent style={styles}>
-                  <ModalHeader>Create Project {id}</ModalHeader>
+                  <ModalHeader>
+                    {project ? 'Edit Project' : 'Create Project'}
+                  </ModalHeader>
 
                   <ModalCloseButton />
 
                   <ModalBody>
                     <form
-                      id={'create-project'}
-                      onSubmit={handleSubmit(async ({ title, description }) => {
-                        await createProject({
-                          variables: { title, description },
-                        })
+                      id={'project-form'}
+                      onSubmit={handleSubmit(({ title, description }) => {
+                        project
+                          ? updateProject({
+                              variables: { id: project.id, title, description },
+                            })
+                          : createProject({
+                              variables: { title, description },
+                            })
                       })}
                     >
                       <Stack spacing={4}>
@@ -129,10 +169,10 @@ const ProjectModal: React.FC = () => {
 
                   <ModalFooter>
                     <Button
-                      form={'create-project'}
+                      form={'project-form'}
                       type={'submit'}
                       colorScheme={'green'}
-                      isLoading={loading}
+                      isLoading={createProjectLoading || updateProjectLoading}
                       loadingText={'Submitting'}
                     >
                       Submit

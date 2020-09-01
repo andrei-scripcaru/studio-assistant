@@ -1,0 +1,7 @@
+query FindProject($id: Int!) {
+  project_by_pk(id: $id) {
+    id
+    title
+    description
+  }
+}

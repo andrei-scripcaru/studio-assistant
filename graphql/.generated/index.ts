@@ -511,6 +511,34 @@ export type CreateProjectMutation = (
   )> }
 );
 
+export type UpdateProjectMutationVariables = Exact<{
+  id: Scalars['Int'];
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateProjectMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_project_by_pk?: Maybe<(
+    { __typename?: 'project' }
+    & Pick<Project, 'id' | 'title' | 'description'>
+  )> }
+);
+
+export type FindProjectQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type FindProjectQuery = (
+  { __typename?: 'query_root' }
+  & { project_by_pk?: Maybe<(
+    { __typename?: 'project' }
+    & Pick<Project, 'id' | 'title' | 'description'>
+  )> }
+);
+
 export type ListProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -558,6 +586,77 @@ export function useCreateProjectMutation(baseOptions?: ApolloReactHooks.Mutation
 export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
 export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
 export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
+export const UpdateProjectDocument = gql`
+    mutation UpdateProject($id: Int!, $title: String, $description: String) {
+  update_project_by_pk(pk_columns: {id: $id}, _set: {description: $description, title: $title}) {
+    id
+    title
+    description
+  }
+}
+    `;
+export type UpdateProjectMutationFn = Apollo.MutationFunction<UpdateProjectMutation, UpdateProjectMutationVariables>;
+
+/**
+ * __useUpdateProjectMutation__
+ *
+ * To run a mutation, you first call `useUpdateProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProjectMutation, { data, loading, error }] = useUpdateProjectMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useUpdateProjectMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateProjectMutation, UpdateProjectMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateProjectMutation, UpdateProjectMutationVariables>(UpdateProjectDocument, baseOptions);
+      }
+export type UpdateProjectMutationHookResult = ReturnType<typeof useUpdateProjectMutation>;
+export type UpdateProjectMutationResult = Apollo.MutationResult<UpdateProjectMutation>;
+export type UpdateProjectMutationOptions = Apollo.BaseMutationOptions<UpdateProjectMutation, UpdateProjectMutationVariables>;
+export const FindProjectDocument = gql`
+    query FindProject($id: Int!) {
+  project_by_pk(id: $id) {
+    id
+    title
+    description
+  }
+}
+    `;
+
+/**
+ * __useFindProjectQuery__
+ *
+ * To run a query within a React component, call `useFindProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindProjectQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useFindProjectQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FindProjectQuery, FindProjectQueryVariables>) {
+        return ApolloReactHooks.useQuery<FindProjectQuery, FindProjectQueryVariables>(FindProjectDocument, baseOptions);
+      }
+export function useFindProjectLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FindProjectQuery, FindProjectQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<FindProjectQuery, FindProjectQueryVariables>(FindProjectDocument, baseOptions);
+        }
+export type FindProjectQueryHookResult = ReturnType<typeof useFindProjectQuery>;
+export type FindProjectLazyQueryHookResult = ReturnType<typeof useFindProjectLazyQuery>;
+export type FindProjectQueryResult = Apollo.QueryResult<FindProjectQuery, FindProjectQueryVariables>;
 export const ListProjectsDocument = gql`
     query ListProjects {
   project(order_by: {created_at: desc}) {

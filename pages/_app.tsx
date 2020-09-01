@@ -1,5 +1,7 @@
 import type { AppProps } from 'next/app'
 
+import { RecoilRoot } from 'recoil'
+
 import { ChakraProvider, CSSReset, Box } from '@chakra-ui/core'
 
 import theme from '@chakra-ui/theme'
@@ -27,17 +29,19 @@ const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   }
 
   return (
-    <ChakraProvider theme={theme}>
-      <CSSReset />
+    <RecoilRoot>
+      <ChakraProvider theme={theme}>
+        <CSSReset />
 
-      <Layout>
-        <AnimatePresence exitBeforeEnter>
-          <MotionBox {...motionProps} key={router.route} height="full">
-            <Component {...pageProps} />
-          </MotionBox>
-        </AnimatePresence>
-      </Layout>
-    </ChakraProvider>
+        <Layout>
+          <AnimatePresence exitBeforeEnter>
+            <MotionBox {...motionProps} key={router.route} height="full">
+              <Component {...pageProps} />
+            </MotionBox>
+          </AnimatePresence>
+        </Layout>
+      </ChakraProvider>
+    </RecoilRoot>
   )
 }
 

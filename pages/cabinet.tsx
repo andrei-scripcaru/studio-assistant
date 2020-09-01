@@ -9,16 +9,25 @@ import {
   Icon,
   Heading,
   HStack,
+  IconButton,
 } from '@chakra-ui/core'
 
-import { HiOutlineViewGrid, HiOutlineUserGroup } from 'react-icons/hi'
+import {
+  HiOutlineViewGrid,
+  HiOutlineUserGroup,
+  HiOutlinePlus,
+} from 'react-icons/hi'
 
 import { withApollo } from '../lib/apollo'
+
+import useProjectModal from '../hooks/useProjectModal'
 
 import ProjectList from '../components/Project/ProjectList'
 import ProjectModal from '../components/Project/ProjectModal'
 
 const Cabinet = (): JSX.Element => {
+  const { onOpen: openModal } = useProjectModal()
+
   const flexProps = {
     width: '50%',
     height: 'full',
@@ -69,6 +78,16 @@ const Cabinet = (): JSX.Element => {
               borderTopColor={'gray.100'}
             >
               <ProjectModal />
+
+              <IconButton
+                aria-label={'Create Project'}
+                variant={'outline'}
+                width={'full'}
+                height={16}
+                fontSize={'3xl'}
+                icon={<HiOutlinePlus />}
+                onClick={() => openModal()}
+              />
             </Box>
           </Flex>
 

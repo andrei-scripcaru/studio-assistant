@@ -1,5 +1,4 @@
 import {
-  useDisclosure,
   useToast,
   Modal,
   ModalOverlay,
@@ -9,7 +8,6 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  IconButton,
   Fade,
   SlideFade,
   FormControl,
@@ -20,9 +18,9 @@ import {
   Stack,
 } from '@chakra-ui/core'
 
-import { HiOutlinePlus } from 'react-icons/hi'
-
 import { useForm } from 'react-hook-form'
+
+import useProjectModal from '../../hooks/useProjectModal'
 
 import {
   useCreateProjectMutation,
@@ -30,13 +28,12 @@ import {
 } from '../../graphql/.generated'
 
 const ProjectModal: React.FC = () => {
-  const toast = useToast()
-
   const {
-    isOpen: modalIsOpen,
-    onOpen: openModal,
-    onClose: closeModal,
-  } = useDisclosure()
+    currentState: { id, isOpen },
+    onClose,
+  } = useProjectModal()
+
+  const toast = useToast()
 
   const { handleSubmit, errors, register } = useForm()
 
@@ -64,7 +61,7 @@ const ProjectModal: React.FC = () => {
         isClosable: true,
       })
 
-      closeModal()
+      onClose()
     },
 
     onError(error) {
@@ -79,89 +76,75 @@ const ProjectModal: React.FC = () => {
   })
 
   return (
-    <>
-      <IconButton
-        aria-label={'Create Project'}
-        variant={'outline'}
-        width={'full'}
-        height={16}
-        fontSize={'3xl'}
-        icon={<HiOutlinePlus />}
-        onClick={openModal}
-      />
+    <Fade timeout={300} in={isOpen}>
+      {(styles) => (
+        <Modal size={'xl'} onClose={onClose} isOpen={true}>
+          <ModalOverlay style={styles}>
+            <SlideFade timeout={150} in={isOpen} unmountOnExit={false}>
+              {(styles) => (
+                <ModalContent style={styles}>
+                  <ModalHeader>Create Project {id}</ModalHeader>
 
-      <Fade timeout={300} in={modalIsOpen}>
-        {(styles) => (
-          <Modal size={'xl'} onClose={closeModal} isOpen={true}>
-            <ModalOverlay style={styles}>
-              <SlideFade timeout={150} in={modalIsOpen} unmountOnExit={false}>
-                {(styles) => (
-                  <ModalContent style={styles}>
-                    <ModalHeader>Create Project</ModalHeader>
+                  <ModalCloseButton />
 
-                    <ModalCloseButton />
+                  <ModalBody>
+                    <form
+                      id={'create-project'}
+                      onSubmit={handleSubmit(async ({ title, description }) => {
+                        await createProject({
+                          variables: { title, description },
+                        })
+                      })}
+                    >
+                      <Stack spacing={4}>
+                        <FormControl isInvalid={errors.title}>
+                          <FormLabel>Title</FormLabel>
 
-                    <ModalBody>
-                      <form
-                        id={'create-project'}
-                        onSubmit={handleSubmit(
-                          async ({ title, description }) => {
-                            await createProject({
-                              variables: { title, description },
-                            })
-                          }
-                        )}
-                      >
-                        <Stack spacing={4}>
-                          <FormControl isInvalid={errors.title}>
-                            <FormLabel>Title</FormLabel>
+                          <Input
+                            type={'text'}
+                            name={'title'}
+                            ref={register({ required: true })}
+                          />
 
-                            <Input
-                              type={'text'}
-                              name={'title'}
-                              ref={register({ required: true })}
-                            />
+                          <FormErrorMessage>
+                            {errors.title && 'Title is required.'}
+                          </FormErrorMessage>
+                        </FormControl>
 
-                            <FormErrorMessage>
-                              {errors.title && 'Title is required.'}
-                            </FormErrorMessage>
-                          </FormControl>
+                        <FormControl isInvalid={errors.description}>
+                          <FormLabel>Description</FormLabel>
 
-                          <FormControl isInvalid={errors.description}>
-                            <FormLabel>Description</FormLabel>
+                          <Textarea
+                            name={'description'}
+                            ref={register({ required: true })}
+                          />
 
-                            <Textarea
-                              name={'description'}
-                              ref={register({ required: true })}
-                            />
+                          <FormErrorMessage>
+                            {errors.description && 'Description is required.'}
+                          </FormErrorMessage>
+                        </FormControl>
+                      </Stack>
+                    </form>
+                  </ModalBody>
 
-                            <FormErrorMessage>
-                              {errors.description && 'Description is required.'}
-                            </FormErrorMessage>
-                          </FormControl>
-                        </Stack>
-                      </form>
-                    </ModalBody>
-
-                    <ModalFooter>
-                      <Button
-                        form={'create-project'}
-                        type={'submit'}
-                        colorScheme={'green'}
-                        isLoading={loading}
-                        loadingText={'Submitting'}
-                      >
-                        Submit
-                      </Button>
-                    </ModalFooter>
-                  </ModalContent>
-                )}
-              </SlideFade>
-            </ModalOverlay>
-          </Modal>
-        )}
-      </Fade>
-    </>
+                  <ModalFooter>
+                    <Button
+                      form={'create-project'}
+                      type={'submit'}
+                      colorScheme={'green'}
+                      isLoading={loading}
+                      loadingText={'Submitting'}
+                    >
+                      Submit
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              )}
+            </SlideFade>
+          </ModalOverlay>
+        </Modal>
+      )}
+    </Fade>
   )
 }
 
